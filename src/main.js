@@ -1,3 +1,13 @@
+// Author: Nikolas Makranyi
+// Title: Rocket Rumble
+// Approx. Time: 
+// Mods List: (point values in parenthesis)
+// (1) "FIRE" UI Text
+// (1) High Score Tracker, displayed on the right side of the screen
+
+
+
+
 let config = {
     type: Phaser.AUTO,
     width: 640,

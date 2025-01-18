@@ -1,3 +1,5 @@
+let highScore = 0;
+
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
@@ -39,7 +41,34 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
+
+        let highScoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+            top: 5,
+            bottom: 5,
+            },
+            fixedWidth: 100
+        }
+
+        let fireConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            }
+        }
+        this.add.text(borderUISize + borderPadding + 250, borderUISize + borderPadding*2, 'FIRE', fireConfig)
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        this.highScoreText = this.add.text(borderUISize + 467, borderUISize + borderPadding*2, highScore, highScoreConfig);
         // GAME OVER flag
         this.gameOver = false;
         // 60-second play clock
@@ -79,6 +108,10 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset()
             this.shipExplode(this.ship01)
         }
+        if(highScore < this.p1Score)
+        {
+            highScore = this.p1Score;
+        }
     }
 
     checkCollision(rocket, ship) {
@@ -106,7 +139,12 @@ class Play extends Phaser.Scene {
         })
         // score add and text update
         this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;   
+        this.scoreLeft.text = this.p1Score;
+        if(this.p1Score > this.highScore)
+        {
+            highScore = this.p1Score;
+            this.highScoreText.text = this.p1Score;
+        }   
         this.sound.play('sfx-explosion');     
     }
 }
