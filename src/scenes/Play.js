@@ -92,6 +92,12 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5)
             this.gameOver = true;
         }, null, this);
+        /*
+        while(game.settings.gameTimer > 0)
+        {
+            this.gameTimer = this.add.text(borderUISize + 278, borderUISize + borderPadding*4.3, game.settings.gameTimer / 1000, timeConfig);
+        }
+        */
     }
 
     update() {
@@ -139,12 +145,8 @@ class Play extends Phaser.Scene {
           rocket.x + rocket.width > ship.x && 
           rocket.y < ship.y + ship.height &&
           rocket.height + rocket.y > ship. y) {
-            game.settings.gameTimer += 1000
-            console.log(game.settings.gameTimer);
           return true;
         } else {
-            game.settings.gameTimer -= 1000
-            console.log(game.settings.gameTimer);
           return false;
         }
     }
@@ -167,7 +169,27 @@ class Play extends Phaser.Scene {
         {
             highScore = this.p1Score;
             this.highScoreText.text = this.p1Score;
-        }   
-        this.sound.play('sfx-explosion');     
+        }
+        let explosionNum = Math.floor(Math.random() * 5);
+        if(explosionNum === 0)
+        {
+            this.sound.play('sfx-explosion'); 
+        }
+        else if(explosionNum === 1)
+        {
+            this.sound.play('sfx-explosion2'); 
+        }
+        else if(explosionNum === 2)
+        {
+            this.sound.play('sfx-explosion3'); 
+        }
+        else if(explosionNum === 3)
+        {
+            this.sound.play('sfx-explosion4'); 
+        }
+        else
+        {
+            this.sound.play('sfx-explosion5');   
+        }  
     }
 }

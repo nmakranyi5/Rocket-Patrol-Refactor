@@ -13,6 +13,10 @@ class Menu extends Phaser.Scene {
         // load audio
         this.load.audio('sfx-select', './assets/sfx-select.wav')
         this.load.audio('sfx-explosion', './assets/sfx-explosion.wav')
+        this.load.audio('sfx-explosion2', './assets/sfx-explosion2.wav')
+        this.load.audio('sfx-explosion3', './assets/sfx-explosion3.wav')
+        this.load.audio('sfx-explosion4', './assets/sfx-explosion4.wav')
+        this.load.audio('sfx-explosion5', './assets/sfx-explosion5.wav')
         this.load.audio('sfx-shot', './assets/sfx-shot.wav')
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {
@@ -44,7 +48,7 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         // display menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET RUMBLE', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2, 'Use <- -> arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
