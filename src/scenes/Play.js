@@ -7,7 +7,7 @@ class Play extends Phaser.Scene {
 
     create() {
         // place tile sprite
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield2').setOrigin(0, 0);
         // green UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
         // white borders
@@ -18,9 +18,10 @@ class Play extends Phaser.Scene {
         // add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
         // add spaceships (x3)
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0)
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
+        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*5, 'spaceship', 0, 30).setOrigin(0, 0)
+        this.ship02 = new Spaceship(this, game.config.width + borderUISize*7, borderUISize*6 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
+        this.ship03 = new Spaceship(this, game.config.width, borderUISize*7 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
+        this.ship04 = new Spaceship2(this, game.config.width, borderUISize*1.5 + borderPadding*5, 'spaceship2', 0, 50).setOrigin(0,0)
         // define keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -62,13 +63,26 @@ class Play extends Phaser.Scene {
             color: '#843605',
             align: 'right',
             padding: {
-                top: 5,
-                bottom: 5,
+                top: 2,
             }
         }
-        this.add.text(borderUISize + borderPadding + 250, borderUISize + borderPadding*2, 'FIRE', fireConfig)
+
+        let timeConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 2,
+            }
+        }
+
+        this.timer = game.settings.gameTimer / 1000;
+        this.add.text(borderUISize + borderPadding + 250, borderUISize + borderPadding*1.5, 'FIRE', fireConfig)
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
         this.highScoreText = this.add.text(borderUISize + 467, borderUISize + borderPadding*2, highScore, highScoreConfig);
+        this.gameTimer = this.add.text(borderUISize + 278, borderUISize + borderPadding*4.3, this.timer, timeConfig);
         // GAME OVER flag
         this.gameOver = false;
         // 60-second play clock
@@ -94,6 +108,7 @@ class Play extends Phaser.Scene {
             this.ship01.update();           // update spaceships (x3)
             this.ship02.update();
             this.ship03.update();
+            this.ship04.update();
         }
         // check collisions
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
@@ -108,6 +123,10 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset()
             this.shipExplode(this.ship01)
         }
+        if (this.checkCollision(this.p1Rocket, this.ship04)) {
+            this.p1Rocket.reset()
+            this.shipExplode(this.ship04)
+        }
         if(highScore < this.p1Score)
         {
             highScore = this.p1Score;
@@ -120,8 +139,12 @@ class Play extends Phaser.Scene {
           rocket.x + rocket.width > ship.x && 
           rocket.y < ship.y + ship.height &&
           rocket.height + rocket.y > ship. y) {
+            game.settings.gameTimer += 1000
+            console.log(game.settings.gameTimer);
           return true;
         } else {
+            game.settings.gameTimer -= 1000
+            console.log(game.settings.gameTimer);
           return false;
         }
     }
