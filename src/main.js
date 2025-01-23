@@ -11,7 +11,7 @@
 // (5) Create a new enemy Spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points
 // (1) Create a new scrolling tile sprite for the background 
 // (3) Create 4 new explosion sound effects and randomize which one plays on impact (Got sound effects from https://mixkit.co/free-sound-effects/explosion/)
-// (3) Display the time remaining (in seconds) on the screen
+// (3) Display the time remaining (in seconds) on the screen (Had a little bit of help from ChatGPT to better understand what to do)
 
 let keySPACE;
 
