@@ -72,37 +72,44 @@ class Play extends Phaser.Scene {
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'center',
             padding: {
                 top: 2,
-            }
+                right: 4,
+            },
+            fixedWidth: 36
         }
-
-        this.timer = game.settings.gameTimer / 1000;
+        this.originalTime = game.settings.gameTimer;
         this.add.text(borderUISize + borderPadding + 250, borderUISize + borderPadding*1.5, 'FIRE', fireConfig)
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
         this.highScoreText = this.add.text(borderUISize + 467, borderUISize + borderPadding*2, highScore, highScoreConfig);
-        this.gameTimer = this.add.text(borderUISize + 278, borderUISize + borderPadding*4.3, this.timer, timeConfig);
+        this.timerText = this.add.text(borderUISize + 278, borderUISize + borderPadding*4.3, game.settings.gameTimer / 1000, timeConfig);
         // GAME OVER flag
         this.gameOver = false;
         // 60-second play clock
         scoreConfig.fixedWidth = 0;
+        this.timer = this.time.addEvent({
+            delay: 1000, // update every second
+            callback: () => {
+                if (game.settings.gameTimer > 0) {
+                    game.settings.gameTimer -= 1000; // reduce timer by 1 second
+                    this.timerText.setText(game.settings.gameTimer / 1000); // update text display
+                }
+            },
+            loop: true
+        });
+
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5)
             this.gameOver = true;
         }, null, this);
-        /*
-        while(game.settings.gameTimer > 0)
-        {
-            this.gameTimer = this.add.text(borderUISize + 278, borderUISize + borderPadding*4.3, game.settings.gameTimer / 1000, timeConfig);
-        }
-        */
     }
 
     update() {
         // check key input for restart
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
+            game.settings.gameTimer = this.originalTime; // set timer back to original time
             this.scene.restart()
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
